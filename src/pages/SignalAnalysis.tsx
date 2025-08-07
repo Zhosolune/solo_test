@@ -102,13 +102,13 @@ const SignalAnalysis: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* 页面Header */}
-      <div className="bg-slate-800 text-white px-6 py-4 shadow-lg h-16">
+      <header className="bg-slate-800 text-white px-6 py-4 shadow-lg h-16">
         <h1 className="text-xl font-bold">信号分析</h1>
-      </div>
+      </header>
       
-      <div className="p-6 space-y-6">
+      <main className="p-6 space-y-6 h-[calc(100vh-64px)] overflow-hidden">
       {/* 状态信息栏 */}
-      <Card className="bg-blue-50 border-blue-200">
+      <Card className="bg-blue-50 border-blue-200 h-18">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-600">当前数据包:</span>
@@ -125,59 +125,26 @@ const SignalAnalysis: React.FC = () => {
         </div>
       </Card>
 
-      <div className="grid grid-cols-12 gap-6">
-        {/* 左侧信号显示区域 */}
-        <div className="col-span-8">
-          {/* 信号显示区域 */}
-          <Card title="信号显示区域" className="shadow-sm">
-            <div className="signal-display-grid">
+      <div className="flex gap-6 h-[calc(100vh-64px-48px-24px-72px)]">
+        {/* 左侧信号显示区域 - 动态宽度 */}
+        <div className="flex-1">
+          {/* 信号显示区域 - 固定5行2列布局 */}
+          <Card title="信号显示区域" className="shadow-sm h-full flex flex-col">
+            <div className="signal-display-grid-fixed flex-1">
               {Array.from({ length: 10 }, (_, index) => (
                 <div
                   key={index}
-                  className="signal-box"
+                  className="signal-box-fixed"
                 >
                   信号 {index + 1}
                 </div>
               ))}
             </div>
           </Card>
-
-          {/* 控制按钮区 */}
-          <Card title="处理控制">
-            <div className="flex flex-wrap gap-3">
-              <Button type="primary" icon={<Play size={16} />} loading={isLoading}>
-                开始切片
-              </Button>
-              <Button icon={<Play size={16} />}>
-                识别
-              </Button>
-              <Button icon={<Settings size={16} />}>
-                合并亲单
-              </Button>
-              <Button icon={<ChevronLeft size={16} />}>
-                下一类
-              </Button>
-              <Button icon={<ChevronRight size={16} />}>
-                下一片
-              </Button>
-              <Button icon={<RotateCcw size={16} />}>
-                重置当前切片
-              </Button>
-              <Button type="default">
-                全速处理
-              </Button>
-              <Button type="default">
-                显示全部聚类结果
-              </Button>
-              <Button type="default">
-                仅显示识别后结果
-              </Button>
-            </div>
-          </Card>
         </div>
 
-        {/* 右侧参数设置面板 */}
-        <div className="col-span-4 space-y-6">
+        {/* 右侧控制面板 - 固定500px宽度 */}
+        <div className="w-[500px] space-y-4 overflow-y-auto h-full">
           {/* 聚类参数设置 */}
           <Card title="聚类参数设置" className="shadow-sm">
             <div className="param-panel">
@@ -269,27 +236,61 @@ const SignalAnalysis: React.FC = () => {
               </div>
             </div>
           </Card>
+
+          {/* 处理控制 */}
+          <Card title="处理控制" className="shadow-sm">
+            <div className="flex flex-wrap gap-2">
+              <Button type="primary" icon={<Play size={16} />} loading={isLoading} size="small">
+                开始切片
+              </Button>
+              <Button icon={<Play size={16} />} size="small">
+                识别
+              </Button>
+              <Button icon={<Settings size={16} />} size="small">
+                合并亲单
+              </Button>
+              <Button icon={<ChevronLeft size={16} />} size="small">
+                下一类
+              </Button>
+              <Button icon={<ChevronRight size={16} />} size="small">
+                下一片
+              </Button>
+              <Button icon={<RotateCcw size={16} />} size="small">
+                重置当前切片
+              </Button>
+              <Button type="default" size="small">
+                全速处理
+              </Button>
+              <Button type="default" size="small">
+                显示全部聚类结果
+              </Button>
+              <Button type="default" size="small">
+                仅显示识别后结果
+              </Button>
+            </div>
+          </Card>
+
+          {/* 雷达信号识别结果表格 */}
+          <Card title="雷达信号识别结果" className="shadow-sm">
+            <Table
+              columns={columns}
+              dataSource={mockSignals}
+              rowKey="id"
+              pagination={{
+                pageSize: 5,
+                showSizeChanger: false,
+                showQuickJumper: false,
+                showTotal: (total) => `共 ${total} 条记录`
+              }}
+              size="small"
+              loading={isLoading}
+              className="result-table"
+              scroll={{ y: 200 }}
+            />
+          </Card>
         </div>
       </div>
-
-      {/* 雷达信号识别结果表格 */}
-      <Card title="雷达信号识别结果" className="shadow-sm">
-        <Table
-          columns={columns}
-          dataSource={mockSignals}
-          rowKey="id"
-          pagination={{
-            pageSize: 10,
-            showSizeChanger: true,
-            showQuickJumper: true,
-            showTotal: (total) => `共 ${total} 条记录`
-          }}
-          size="middle"
-          loading={isLoading}
-          className="result-table"
-        />
-      </Card>
-      </div>
+      </main>
     </div>
   );
 };

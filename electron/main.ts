@@ -67,7 +67,9 @@ function createMainWindow() {
     mainWindow.loadURL('http://localhost:3000');
     mainWindow.webContents.openDevTools();
   } else {
-    mainWindow.loadFile(join(__dirname, '../dist/index.html'));
+    // 生产环境下加载打包后的HTML文件
+    const htmlPath = join(__dirname, '..', 'dist', 'index.html');
+    mainWindow.loadFile(htmlPath);
   }
 
   // 窗口准备好后显示

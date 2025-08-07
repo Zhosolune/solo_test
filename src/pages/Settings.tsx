@@ -400,11 +400,11 @@ const Settings: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* 页面Header */}
-      <div className="bg-slate-800 text-white px-6 py-4 shadow-lg h-16">
+      <header className="bg-slate-800 text-white px-6 py-4 shadow-lg h-16">
         <h1 className="text-xl font-bold">系统设置</h1>
-      </div>
+      </header>
 
-      <div className="p-6 space-y-6">
+      <main className="p-6 space-y-6">
         {/* 页面标题 */}
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-800">系统设置</h1>
@@ -445,7 +445,7 @@ const Settings: React.FC = () => {
             <Tabs items={tabItems} />
           </Card>
         </Form>
-      </div>
+      </main>
     </div>
   );
 };

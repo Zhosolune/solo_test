@@ -263,6 +263,32 @@ input, textarea, [contenteditable="true"] {
   transform: scale(1.02);
 }
 
+/* 固定5行2列信号显示区域样式 */
+.signal-display-grid-fixed {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 10px;
+  height: 100%;
+  min-height: calc(5 * 120px + 4 * 10px);
+}
+
+.signal-box-fixed {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  transition: transform 0.2s ease;
+  min-height: 120px;
+}
+
+/* .signal-box-fixed:hover {
+  transform: scale(1.02);
+} */
+
 /* 参数面板样式 */
 .param-panel {
   background: #fafafa;
@@ -284,4 +310,16 @@ input, textarea, [contenteditable="true"] {
 
 .result-table .ant-table-tbody > tr:nth-child(even) {
   background-color: #fafafa;
+}
+
+/* Card组件flex布局支持 */
+.ant-card.flex {
+  display: flex;
+  flex-direction: column;
+}
+
+.ant-card.flex .ant-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }

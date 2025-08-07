@@ -138,7 +138,7 @@ const Home: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* 页面Header */}
-      <div className="bg-slate-800 text-white px-6 py-4 shadow-lg h-16 flex justify-between items-center">
+      <header className="bg-slate-800 text-white px-6 py-4 shadow-lg h-16 flex justify-between items-center">
         <h1 className="text-xl font-bold">首页</h1>
         <Button
           type="text"
@@ -146,9 +146,9 @@ const Home: React.FC = () => {
           className="text-white border-none settings-gear-button"
           onClick={() => setIsSettingsModalOpen(true)}
         />
-      </div>
+      </header>
       
-      <div className="p-6 space-y-6">
+      <main className="p-6 space-y-6">
         {/* 页面标题 */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-800 mb-2">雷达信号分析系统</h1>
@@ -284,7 +284,7 @@ const Home: React.FC = () => {
            />
         </Card>
       )}
-      </div>
+      </main>
       
       {/* 卡片设置弹窗 */}
       <Modal

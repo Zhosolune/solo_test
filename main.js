@@ -62,7 +62,8 @@ function createMainWindow() {
         mainWindow.webContents.openDevTools();
     }
     else {
-        mainWindow.loadFile((0, path_1.join)(__dirname, '../dist/index.html'));
+        const htmlPath = (0, path_1.join)(__dirname, 'dist', 'index.html');
+        mainWindow.loadFile(htmlPath);
     }
     // 窗口准备好后显示
     mainWindow.once('ready-to-show', () => {
