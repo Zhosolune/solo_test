@@ -25,3 +25,5 @@ dist-electron/
 *.sln
 *.sw?
 .vite
+
+.trae/TODO.md

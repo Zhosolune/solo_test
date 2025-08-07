@@ -11,7 +11,7 @@ import {
 import { useAppStore } from '../store';
 import type { MenuItem } from '../types';
 
-const { Sider } = AntLayout;
+const { Header, Content, Sider } = AntLayout;
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -93,89 +93,97 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     };
   });
 
+  const siderStyle: React.CSSProperties = {
+    overflow: 'auto',
+    height: '100vh',
+    position: 'fixed',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    zIndex: 40,
+  };
+
   return (
-    <div className="h-screen flex flex-col">
-      {/* 主布局容器 */}
-      <div className="flex flex-1"> 
-        {/* 固定侧边栏 */}
-        <Sider
-          collapsed={sidebar.isCollapsed}
-          collapsible
-          trigger={null}
-          width={240}
-          collapsedWidth={60}
-          className="bg-slate-800 shadow-lg fixed left-0 top-0 bottom-0 z-40"
-          theme="dark"
-        >
-          {/* Logo区域 */}
-          <div className="h-16 flex items-center justify-between px-4">
-            {!sidebar.isCollapsed ? (
-              <>
-                <div className="relative overflow-hidden">
-                  <div 
-                    className={`text-white font-bold text-lg transition-all duration-300 ease-out ${
-                      isExpanding ? 'reveal-text' : ''
-                    }`}
-                    style={{
-                      clipPath: sidebar.isCollapsed ? 'inset(0 100% 0 0)' : 'inset(0 0% 0 0)'
-                    }}
-                  >
-                    导航菜单
-                  </div>
-                </div>
-                <div
-                  className="w-10 h-10 flex items-center justify-center cursor-pointer rounded-md group"
-                  onClick={handleToggleSidebar}
+    <AntLayout hasSider style={{ minHeight: '100vh' }}>
+      {/* 固定侧边栏 */}
+      <Sider
+        collapsed={sidebar.isCollapsed}
+        collapsible
+        trigger={null}
+        width={240}
+        collapsedWidth={60}
+        style={siderStyle}
+        className="bg-slate-800 shadow-lg"
+        theme="dark"
+      >
+        {/* Logo区域 */}
+        <div className="h-16 flex items-center justify-between px-4">
+          {!sidebar.isCollapsed ? (
+            <>
+              <div className="relative overflow-hidden">
+                <div 
+                  className={`text-white font-bold text-lg transition-all duration-300 ease-out ${
+                    isExpanding ? 'reveal-text' : ''
+                  }`}
+                  style={{
+                    clipPath: sidebar.isCollapsed ? 'inset(0 100% 0 0)' : 'inset(0 0% 0 0)'
+                  }}
                 >
-                  <MenuFoldOutlined 
-                    className="text-white transition-all duration-200 group-hover:font-bold group-hover:brightness-125"
-                    style={{ fontSize: '18px' }}
-                  />
+                  导航菜单
                 </div>
-              </>
-            ) : (
+              </div>
               <div
-                className="w-10 h-10 flex items-center justify-center cursor-pointer rounded-md mx-auto group"
+                className="w-10 h-10 flex items-center justify-center cursor-pointer rounded-md group"
                 onClick={handleToggleSidebar}
               >
-                <MenuUnfoldOutlined 
+                <MenuFoldOutlined 
                   className="text-white transition-all duration-200 group-hover:font-bold group-hover:brightness-125"
                   style={{ fontSize: '18px' }}
                 />
               </div>
-            )}
-          </div>
-
-          {/* 导航菜单 */}
-          <Menu
-            theme="dark"
-            mode="inline"
-            selectedKeys={[sidebar.activeMenuItem]}
-            items={antMenuItems}
-            className="bg-slate-800 border-r-0"
-            style={{
-              fontSize: '14px'
-            }}
-          />
-
-          {/* 底部信息 */}
-          {!sidebar.isCollapsed && (
-            <div className="absolute bottom-4 left-4 right-4 text-xs text-slate-400">
-              <div className="border-t border-slate-700 pt-3">
-                <div>版本 v1.0.0</div>
-                <div className="mt-1">© 2024 雷达分析系统</div>
-              </div>
+            </>
+          ) : (
+            <div
+              className="w-10 h-10 flex items-center justify-center cursor-pointer rounded-md mx-auto group"
+              onClick={handleToggleSidebar}
+            >
+              <MenuUnfoldOutlined 
+                className="text-white transition-all duration-200 group-hover:font-bold group-hover:brightness-125"
+                style={{ fontSize: '18px' }}
+              />
             </div>
           )}
-        </Sider>
-
-        {/* 右侧内容区域 */}
-        <div className="flex-1" style={{ marginLeft: sidebar.isCollapsed ? '60px' : '240px' }}>
-          {/* 子页面内容，每个页面有自己的header和content */}
-          {children}
         </div>
-      </div>
-    </div>
+
+        {/* 导航菜单 */}
+        <Menu
+          theme="dark"
+          mode="inline"
+          selectedKeys={[sidebar.activeMenuItem]}
+          items={antMenuItems}
+          className="bg-slate-800 border-r-0"
+          style={{
+            fontSize: '14px'
+          }}
+        />
+
+        {/* 底部信息 */}
+        {!sidebar.isCollapsed && (
+          <div className="absolute bottom-4 left-4 right-4 text-xs text-slate-400">
+            <div className="border-t border-slate-700 pt-3">
+              <div>版本 v1.0.0</div>
+              <div className="mt-1">© 2024 雷达分析系统</div>
+            </div>
+          </div>
+        )}
+      </Sider>
+
+      {/* 主内容区域 */}
+      <AntLayout style={{ marginLeft: sidebar.isCollapsed ? '60px' : '240px' }}>
+        {/* 子页面内容，每个页面有自己的header和content */}
+        {children}
+      </AntLayout>
+    </AntLayout>
   );
 };
 
