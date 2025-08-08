@@ -1,23 +1,39 @@
 import React from 'react';
-import { Layout as AntLayout, Menu, Button } from 'antd';
+import { Layout as AntLayout, Menu } from 'antd';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { 
-  Home, 
-  Activity, 
-  Database, 
+import {
+  Home,
+  Activity,
+  Database,
   Settings
 } from 'lucide-react';
 import { useAppStore } from '../store';
 import type { MenuItem } from '../types';
 
-const { Header, Content, Sider } = AntLayout;
+const { Header, Content, Sider, Footer } = AntLayout;
 
-interface LayoutProps {
+/**
+ * 主布局组件属性接口
+ */
+interface MainLayoutProps {
   children: React.ReactNode;
+  /** 页面Header内容 */
+  pageHeader?: React.ReactNode;
+  /** 页面Footer内容 */
+  pageFooter?: React.ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+/**
+ * 主布局组件
+ * 提供统一的Sider、Header、Content、Footer布局结构
+ * 支持通过pageHeader和pageFooter属性自定义页面级别的Header和Footer内容
+ */
+const MainLayout: React.FC<MainLayoutProps> = ({
+  children,
+  pageHeader,
+  pageFooter
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { sidebar, toggleSidebar, setActiveMenuItem } = useAppStore();
@@ -103,6 +119,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     zIndex: 40,
   };
 
+
+
   return (
     <AntLayout hasSider style={{ minHeight: '100vh' }}>
       {/* 固定侧边栏 */}
@@ -112,8 +130,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         trigger={null}
         width={240}
         collapsedWidth={60}
-        style={siderStyle}
-        className="bg-slate-800 shadow-lg"
+        className="fixed left-0 top-0 bottom-0 z-[1000] bg-gray-800 border-r border-gray-600 shadow-lg"
         theme="dark"
       >
         {/* Logo区域 */}
@@ -121,10 +138,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           {!sidebar.isCollapsed ? (
             <>
               <div className="relative overflow-hidden">
-                <div 
-                  className={`text-white font-bold text-lg transition-all duration-300 ease-out ${
-                    isExpanding ? 'reveal-text' : ''
-                  }`}
+                <div
+                  className={`text-white font-bold text-lg transition-all duration-300 ease-out ${isExpanding ? 'reveal-text' : ''
+                    }`}
                   style={{
                     clipPath: sidebar.isCollapsed ? 'inset(0 100% 0 0)' : 'inset(0 0% 0 0)'
                   }}
@@ -136,7 +152,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 className="w-10 h-10 flex items-center justify-center cursor-pointer rounded-md group"
                 onClick={handleToggleSidebar}
               >
-                <MenuFoldOutlined 
+                <MenuFoldOutlined
                   className="text-white transition-all duration-200 group-hover:font-bold group-hover:brightness-125"
                   style={{ fontSize: '18px' }}
                 />
@@ -147,7 +163,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               className="w-10 h-10 flex items-center justify-center cursor-pointer rounded-md mx-auto group"
               onClick={handleToggleSidebar}
             >
-              <MenuUnfoldOutlined 
+              <MenuUnfoldOutlined
                 className="text-white transition-all duration-200 group-hover:font-bold group-hover:brightness-125"
                 style={{ fontSize: '18px' }}
               />
@@ -180,11 +196,24 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
       {/* 主内容区域 */}
       <AntLayout style={{ marginLeft: sidebar.isCollapsed ? '60px' : '240px' }}>
-        {/* 子页面内容，每个页面有自己的header和content */}
-        {children}
+        {/* Header区域 - 页面级别Header */}
+        <Header className="p-0 h-18">
+          {pageHeader}
+        </Header>
+
+        {/* Content区域 - 子页面内容 */}
+        <Content className="m-0 h-[calc(100vh-72px-20px)] p-0"> {/* 高度：100vh - header - footer */}
+
+          {children}
+        </Content>
+
+        {/* Footer区域 - 页面级别Footer */}
+        <Footer className='p-0 h-5 bg-[#f0f2f5]'>
+          {pageFooter}
+        </Footer>
       </AntLayout>
     </AntLayout>
   );
 };
 
-export default Layout;
+export default MainLayout;

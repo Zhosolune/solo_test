@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, Form, InputNumber, Switch, Select, Button, Progress, Alert, Tabs } from 'antd';
 import { Save, RotateCcw, Monitor, Cpu, HardDrive, Wifi } from 'lucide-react';
 import type { TabsProps } from 'antd';
+import MainLayout from '../components/Layout';
 
 const { Option } = Select;
 
@@ -13,14 +14,14 @@ interface SystemSettings {
   defaultPAWeight: number;
   defaultDTOAWeight: number;
   defaultJointThreshold: number;
-
+  
   // 系统配置
   maxConcurrentTasks: number;
   autoSaveInterval: number;
   logLevel: string;
   enableRealTimeProcessing: boolean;
   enableAutoBackup: boolean;
-
+  
   // 显示设置
   chartRefreshRate: number;
   maxDisplayPoints: number;
@@ -31,7 +32,7 @@ interface SystemSettings {
 const Settings: React.FC = () => {
   const [form] = Form.useForm();
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-
+  
   // 默认设置
   const defaultSettings: SystemSettings = {
     defaultEpsilonCF: 0.5,
@@ -397,31 +398,33 @@ const Settings: React.FC = () => {
     }
   ];
 
-  return (
-    <div className="min-h-screen">
-      {/* 页面Header */}
-      <header className="bg-slate-800 text-white px-6 py-4 shadow-lg h-16">
-        <h1 className="text-xl font-bold">系统设置</h1>
-      </header>
+  const pageHeader = (
+    <div className="bg-slate-800 text-white px-6 py-4 shadow-lg flex items-center justify-between">
+      <h1 className="text-xl font-bold">系统设置</h1>
+      <div className="flex gap-3">
+        <Button 
+          icon={<RotateCcw size={16} />} 
+          onClick={handleReset}
+          className="text-white border-white hover:bg-slate-700"
+        >
+          重置默认
+        </Button>
+        <Button 
+          type="primary" 
+          icon={<Save size={16} />} 
+          onClick={handleSave}
+          disabled={!hasUnsavedChanges}
+          className="bg-blue-600 hover:bg-blue-700"
+        >
+          保存设置
+        </Button>
+      </div>
+    </div>
+  );
 
-      <main className="p-6 space-y-6">
-        {/* 页面标题 */}
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-800">系统设置</h1>
-          <div className="flex gap-3">
-            <Button icon={<RotateCcw size={16} />} onClick={handleReset}>
-              重置默认
-            </Button>
-            <Button
-              type="primary"
-              icon={<Save size={16} />}
-              onClick={handleSave}
-              disabled={!hasUnsavedChanges}
-            >
-              保存设置
-            </Button>
-          </div>
-        </div>
+  return (
+    <MainLayout pageHeader={pageHeader}>
+      <div className="p-6 space-y-6">
 
         {/* 未保存更改提示 */}
         {hasUnsavedChanges && (
@@ -445,8 +448,8 @@ const Settings: React.FC = () => {
             <Tabs items={tabItems} />
           </Card>
         </Form>
-      </main>
-    </div>
+      </div>
+    </MainLayout>
   );
 };
 

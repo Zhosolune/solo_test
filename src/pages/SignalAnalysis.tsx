@@ -3,6 +3,7 @@ import { Card, Button, InputNumber, Table, Progress, Tag } from 'antd';
 import { Play, RotateCcw, ChevronLeft, ChevronRight, Settings } from 'lucide-react';
 import { useAppStore } from '../store';
 import type { RadarSignal } from '../types';
+import MainLayout from '../components/Layout';
 
 const SignalAnalysis: React.FC = () => {
   const {
@@ -99,33 +100,31 @@ const SignalAnalysis: React.FC = () => {
     }
   ];
 
-  return (
-    <div className="min-h-screen">
-      {/* 页面Header */}
-      <header className="bg-slate-800 text-white px-6 py-4 shadow-lg h-16">
-        <h1 className="text-xl font-bold">信号分析</h1>
-      </header>
-      
-      <main className="p-6 space-y-6 h-[calc(100vh-64px)] overflow-hidden">
-      {/* 状态信息栏 */}
-      <Card className="bg-blue-50 border-blue-200 h-18">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">当前数据包:</span>
-            <span className="font-medium">Package_001.bin</span>
-            <span className="text-sm text-gray-600">预计切片数:</span>
-            <span className="font-medium">128</span>
-            <span className="text-sm text-gray-600">当前切片:</span>
-            <span className="font-medium">45/128</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Progress percent={35} size="small" className="w-32" />
-            <span className="text-sm text-gray-600">35%</span>
-          </div>
-        </div>
-      </Card>
+  const pageHeader = (
+    <div className="bg-slate-800 text-white px-6 py-4 shadow-lg h-full flex items-center">
+      <h1 className="text-xl font-bold">信号分析</h1>
+    </div>
+  );
 
-      <div className="flex gap-6 h-[calc(100vh-64px-48px-24px-72px)]">
+  const pageFooter = (
+    <div className="flex justify-between items-center px-4 h-full">
+      <div className="flex items-center gap-3">
+        <span className="text-xs text-gray-600">当前数据包:</span>
+        <span className="text-xs font-medium">Package_001.bin</span>
+        <span className="text-xs text-gray-600">预计切片数:</span>
+        <span className="text-xs font-medium">128</span>
+        <span className="text-xs text-gray-600">当前切片:</span>
+        <span className="text-xs font-medium">45/128</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <Progress percent={35} size="small" className="w-24" />
+      </div>
+    </div>
+  );
+
+  return (
+    <MainLayout pageHeader={pageHeader} pageFooter={pageFooter}>
+      <div className="p-6 flex gap-6 h-full">
         {/* 左侧信号显示区域 - 动态宽度 */}
         <div className="flex-1">
           {/* 信号显示区域 - 固定5行2列布局 */}
@@ -290,8 +289,7 @@ const SignalAnalysis: React.FC = () => {
           </Card>
         </div>
       </div>
-      </main>
-    </div>
+    </MainLayout>
   );
 };
 

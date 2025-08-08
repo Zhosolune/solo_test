@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, Table, Button, Upload, Modal, Tag, Space, Input, DatePicker, Select } from 'antd';
 import { Upload as UploadIcon, Download, Trash2, Eye, Search, Filter } from 'lucide-react';
 import type { UploadProps } from 'antd';
+import MainLayout from '../components/Layout';
 // import dayjs from 'dayjs'; // Reserved for future use
 
 const { Search: AntSearch } = Input;
@@ -136,26 +137,26 @@ const DataManagement: React.FC = () => {
       key: 'action',
       render: (_, record: DataFile) => (
         <Space size="small">
-          <Button
-            type="link"
-            icon={<Eye size={14} />}
+          <Button 
+            type="link" 
+            icon={<Eye size={14} />} 
             size="small"
             disabled={record.status !== 'processed'}
           >
             查看
           </Button>
-          <Button
-            type="link"
-            icon={<Download size={14} />}
+          <Button 
+            type="link" 
+            icon={<Download size={14} />} 
             size="small"
             disabled={record.status !== 'processed'}
           >
             导出
           </Button>
-          <Button
-            type="link"
-            danger
-            icon={<Trash2 size={14} />}
+          <Button 
+            type="link" 
+            danger 
+            icon={<Trash2 size={14} />} 
             size="small"
           >
             删除
@@ -193,144 +194,151 @@ const DataManagement: React.FC = () => {
     return matchesSearch && matchesStatus;
   });
 
-  return (
-    <div className="min-h-screen">
-      {/* 页面Header */}
-      <header className="bg-slate-800 text-white px-6 py-4 shadow-lg h-16">
-        <h1 className="text-xl font-bold">数据管理</h1>
-      </header>
-
-      <main className="p-6 space-y-6">
-        {/* 页面标题和操作按钮 */}
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-800">数据管理</h1>
-          <Space>
-            <Button
-              type="primary"
-              icon={<UploadIcon size={16} />}
-              onClick={() => setIsUploadModalVisible(true)}
-            >
-              导入数据
-            </Button>
-            <Button
-              icon={<Download size={16} />}
-              disabled={selectedRowKeys.length === 0}
-            >
-              批量导出
-            </Button>
-            <Button
-              danger
-              icon={<Trash2 size={16} />}
-              disabled={selectedRowKeys.length === 0}
-            >
-              批量删除
-            </Button>
-          </Space>
-        </div>
-
-        {/* 统计卡片 */}
-        <div className="grid grid-cols-4 gap-4">
-          <Card className="text-center">
-            <div className="text-2xl font-bold text-blue-600">{mockDataFiles.length}</div>
-            <div className="text-sm text-gray-600">总文件数</div>
-          </Card>
-          <Card className="text-center">
-            <div className="text-2xl font-bold text-green-600">
-              {mockDataFiles.filter(f => f.status === 'processed').length}
-            </div>
-            <div className="text-sm text-gray-600">已处理</div>
-          </Card>
-          <Card className="text-center">
-            <div className="text-2xl font-bold text-orange-600">
-              {mockDataFiles.filter(f => f.status === 'pending').length}
-            </div>
-            <div className="text-sm text-gray-600">待处理</div>
-          </Card>
-          <Card className="text-center">
-            <div className="text-2xl font-bold text-red-600">
-              {mockDataFiles.filter(f => f.status === 'error').length}
-            </div>
-            <div className="text-sm text-gray-600">处理失败</div>
-          </Card>
-        </div>
-
-        {/* 搜索和筛选 */}
-        <Card>
-          <div className="flex gap-4 items-center">
-            <AntSearch
-              placeholder="搜索文件名"
-              allowClear
-              style={{ width: 300 }}
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              prefix={<Search size={16} />}
-            />
-            <Select
-              value={statusFilter}
-              onChange={setStatusFilter}
-              style={{ width: 120 }}
-              suffixIcon={<Filter size={16} />}
-            >
-              <Option value="all">全部状态</Option>
-              <Option value="processed">已处理</Option>
-              <Option value="pending">待处理</Option>
-              <Option value="error">处理失败</Option>
-            </Select>
-            <RangePicker
-              placeholder={['开始日期', '结束日期']}
-              style={{ width: 300 }}
-            />
-          </div>
-        </Card>
-
-        {/* 数据文件列表 */}
-        <Card title="数据文件列表">
-          <Table
-            rowSelection={rowSelection}
-            columns={columns}
-            dataSource={filteredData}
-            rowKey="id"
-            pagination={{
-              pageSize: 10,
-              showSizeChanger: true,
-              showQuickJumper: true,
-              showTotal: (total, range) =>
-                `第 ${range[0]}-${range[1]} 条，共 ${total} 条记录`
-            }}
-            size="small"
-          />
-        </Card>
-
-        {/* 上传文件模态框 */}
-        <Modal
-          title="导入数据文件"
-          open={isUploadModalVisible}
-          onCancel={() => setIsUploadModalVisible(false)}
-          footer={[
-            <Button key="cancel" onClick={() => setIsUploadModalVisible(false)}>
-              取消
-            </Button>,
-            <Button key="upload" type="primary">
-              开始上传
-            </Button>
-          ]}
-          width={600}
+  const pageHeader = (
+    <div className="bg-slate-800 text-white h-full px-6 py-4 shadow-lg flex items-center justify-between">
+      <h1 className="text-xl font-bold">数据管理</h1>
+      <Space>
+        <Button 
+          type="primary" 
+          icon={<UploadIcon size={16} />}
+          onClick={() => setIsUploadModalVisible(true)}
+          className="bg-blue-600 hover:bg-blue-700"
         >
-          <div className="space-y-4">
-            <div className="text-sm text-gray-600">
-              支持的文件格式：.bin, .dat, .csv, .json
-            </div>
-            <Upload.Dragger {...uploadProps} className="p-6">
-              <div className="text-center">
-                <UploadIcon size={48} className="mx-auto text-gray-400 mb-4" />
-                <p className="text-lg">点击或拖拽文件到此区域上传</p>
-                <p className="text-sm text-gray-500">支持单个或批量上传，文件大小不超过 500MB</p>
-              </div>
-            </Upload.Dragger>
-          </div>
-        </Modal>
-      </main>
+          导入数据
+        </Button>
+        <Button 
+          icon={<Download size={16} />}
+          disabled={selectedRowKeys.length === 0}
+          className="text-white border-white hover:bg-slate-700"
+        >
+          批量导出
+        </Button>
+        <Button 
+          danger 
+          icon={<Trash2 size={16} />}
+          disabled={selectedRowKeys.length === 0}
+          className="text-white border-white hover:bg-slate-700"
+        >
+          批量删除
+        </Button>
+      </Space>
     </div>
+  );
+
+  const pageFooter = (
+    <div className="flex justify-between items-center px-4 h-full">
+      <span className="text-xs text-gray-600">© 2024 雷达分析系统</span>
+    </div>
+  );
+
+  return (
+    <MainLayout pageHeader={pageHeader} pageFooter={pageFooter}>
+
+      <div className="p-6 space-y-6 h-full">
+
+      {/* 统计卡片 */}
+      <div className="grid grid-cols-4 gap-4">
+        <Card className="text-center">
+          <div className="text-2xl font-bold text-blue-600">{mockDataFiles.length}</div>
+          <div className="text-sm text-gray-600">总文件数</div>
+        </Card>
+        <Card className="text-center">
+          <div className="text-2xl font-bold text-green-600">
+            {mockDataFiles.filter(f => f.status === 'processed').length}
+          </div>
+          <div className="text-sm text-gray-600">已处理</div>
+        </Card>
+        <Card className="text-center">
+          <div className="text-2xl font-bold text-orange-600">
+            {mockDataFiles.filter(f => f.status === 'pending').length}
+          </div>
+          <div className="text-sm text-gray-600">待处理</div>
+        </Card>
+        <Card className="text-center">
+          <div className="text-2xl font-bold text-red-600">
+            {mockDataFiles.filter(f => f.status === 'error').length}
+          </div>
+          <div className="text-sm text-gray-600">处理失败</div>
+        </Card>
+      </div>
+
+      {/* 搜索和筛选 */}
+      <Card>
+        <div className="flex gap-4 items-center">
+          <AntSearch
+            placeholder="搜索文件名"
+            allowClear
+            style={{ width: 300 }}
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            prefix={<Search size={16} />}
+          />
+          <Select
+            value={statusFilter}
+            onChange={setStatusFilter}
+            style={{ width: 120 }}
+            suffixIcon={<Filter size={16} />}
+          >
+            <Option value="all">全部状态</Option>
+            <Option value="processed">已处理</Option>
+            <Option value="pending">待处理</Option>
+            <Option value="error">处理失败</Option>
+          </Select>
+          <RangePicker
+            placeholder={['开始日期', '结束日期']}
+            style={{ width: 300 }}
+          />
+        </div>
+      </Card>
+
+      {/* 数据文件列表 */}
+      <Card title="数据文件列表">
+        <Table
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={filteredData}
+          rowKey="id"
+          pagination={{
+            pageSize: 10,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            showTotal: (total, range) => 
+              `第 ${range[0]}-${range[1]} 条，共 ${total} 条记录`
+          }}
+          size="small"
+        />
+      </Card>
+
+      {/* 上传文件模态框 */}
+      <Modal
+        title="导入数据文件"
+        open={isUploadModalVisible}
+        onCancel={() => setIsUploadModalVisible(false)}
+        footer={[
+          <Button key="cancel" onClick={() => setIsUploadModalVisible(false)}>
+            取消
+          </Button>,
+          <Button key="upload" type="primary">
+            开始上传
+          </Button>
+        ]}
+        width={600}
+      >
+        <div className="space-y-4">
+          <div className="text-sm text-gray-600">
+            支持的文件格式：.bin, .dat, .csv, .json
+          </div>
+          <Upload.Dragger {...uploadProps} className="p-6">
+            <div className="text-center">
+              <UploadIcon size={48} className="mx-auto text-gray-400 mb-4" />
+              <p className="text-lg">点击或拖拽文件到此区域上传</p>
+              <p className="text-sm text-gray-500">支持单个或批量上传，文件大小不超过 500MB</p>
+            </div>
+          </Upload.Dragger>
+        </div>
+      </Modal>
+      </div>
+    </MainLayout>
   );
 };
 
