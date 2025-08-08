@@ -241,12 +241,6 @@ input, textarea, [contenteditable="true"] {
 }
 
 /* 信号显示区域样式 */
-.signal-display-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-}
-
 .signal-box {
   aspect-ratio: 1;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
