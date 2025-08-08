@@ -127,19 +127,54 @@ const SignalAnalysis: React.FC = () => {
       <div className="p-6 flex gap-6 h-full">
         {/* 左侧信号显示区域 - 动态宽度 */}
         <div className="flex-1">
-          {/* 信号显示区域 - 固定5行2列布局 */}
-          <Card title="信号显示区域" className="shadow-sm h-full flex flex-col">
-            <div className="signal-display-grid-fixed flex-1">
-              {Array.from({ length: 10 }, (_, index) => (
-                <div
-                  key={index}
-                  className="signal-box-fixed"
-                >
-                  信号 {index + 1}
-                </div>
-              ))}
-            </div>
-          </Card>
+          {/* 信号显示区域 - 两列卡片，每列5个图像窗格 */}
+          <div className="flex gap-[10px] h-full">
+            {/* 第一列卡片 - 5个图像窗格 */}
+            <Card className="flex-1 shadow-sm flex flex-col signal-display-card color-[#1890ff]" title="切片图像">
+              <div className="flex flex-col gap-3 h-full">
+                {Array.from({ length: 5 }, (_, index) => {
+                  const labels = ['载频', '脉宽', '幅度', '一级差', '方位角'];
+                  return (
+                    <div key={index} className="flex-1 flex items-center gap-1">
+                      {/* 左侧竖排标签 */}
+                      <div className="w-5 h-full flex items-center justify-center">
+                        <span className="text-xs text-gray-600 writing-mode-vertical-rl text-orientation-mixed">
+                          {labels[index]}
+                        </span>
+                      </div>
+                      {/* 图像窗格 */}
+                      <div className="flex-1 h-full signal-box-fixed">
+                        信号 {index + 1}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </Card>
+            
+            {/* 第二列卡片 - 5个图像窗格 */}
+            <Card className="flex-1 shadow-sm flex flex-col signal-display-card" title="聚类图像">
+              <div className="flex flex-col gap-3 h-full">
+                {Array.from({ length: 5 }, (_, index) => {
+                  const labels = ['载频', '脉宽', '幅度', '一级差', '方位角'];
+                  return (
+                    <div key={index + 5} className="flex-1 flex items-center gap-1">
+                      {/* 左侧竖排标签 */}
+                      <div className="w-5 h-full flex items-center justify-center">
+                        <span className="text-xs text-gray-600 writing-mode-vertical-rl text-orientation-mixed">
+                          {labels[index]}
+                        </span>
+                      </div>
+                      {/* 图像窗格 */}
+                      <div className="flex-1 h-full signal-box-fixed">
+                        信号 {index + 6}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </Card>
+          </div>
         </div>
 
         {/* 右侧控制面板 - 固定500px宽度 */}
