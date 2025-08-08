@@ -237,7 +237,7 @@ input, textarea, [contenteditable="true"] {
 }
 
 .reveal-text {
-  animation: revealText 0.3s ease-out;
+  animation: revealText 0.2s ease-out;
 }
 
 /* 信号显示区域样式 */
@@ -323,6 +323,15 @@ input, textarea, [contenteditable="true"] {
   display: flex;
   flex-direction: column;
   padding: 12px !important;
+}
+
+/* 侧边栏动画优化 */
+.ant-layout-sider {
+  transition: all 0.2s ease !important;
+}
+
+.ant-layout-sider-children {
+  transition: all 0.2s ease !important;
 }
 
 /* 信号显示区域卡片标题样式自定义 */

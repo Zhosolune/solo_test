@@ -129,6 +129,7 @@ const SignalAnalysis: React.FC = () => {
         <div className="flex-1">
           {/* 信号显示区域 - 两列卡片，每列5个图像窗格 */}
           <div className="flex gap-[10px] h-full">
+
             {/* 第一列卡片 - 5个图像窗格 */}
             <Card className="flex-1 shadow-sm flex flex-col signal-display-card color-[#1890ff]" title="切片图像">
               <div className="flex flex-col gap-3 h-full">
@@ -178,7 +179,7 @@ const SignalAnalysis: React.FC = () => {
         </div>
 
         {/* 右侧控制面板 - 固定500px宽度 */}
-        <div className="w-[500px] space-y-4 overflow-y-auto h-full">
+        <div className="w-[600px] space-y-4 overflow-y-auto h-full">
           {/* 聚类参数设置 */}
           <Card title="聚类参数设置" className="shadow-sm">
             <div className="param-panel">

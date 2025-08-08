@@ -195,7 +195,12 @@ const MainLayout: React.FC<MainLayoutProps> = ({
       </Sider>
 
       {/* 主内容区域 */}
-      <AntLayout style={{ marginLeft: sidebar.isCollapsed ? '60px' : '240px' }}>
+      <AntLayout 
+        style={{ 
+          marginLeft: sidebar.isCollapsed ? '60px' : '240px',
+          transition: 'margin-left 0.2s ease'
+        }}
+      >
         {/* Header区域 - 页面级别Header */}
         <Header className="p-0 h-18">
           {pageHeader}
